@@ -30,7 +30,11 @@ function YoutubeGrid() {
     initialState?.videos || Array.from({ length: rows * columns }, () => "")
   );
 
-  const setVideo = (index, videoId) => {
+  const setVideo = (index, url) => {
+    const videoId = url.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/
+    )?.[1];
+
     const newVideos = [...videos];
     newVideos[index] = videoId;
     setVideos(newVideos);
