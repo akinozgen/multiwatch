@@ -1,8 +1,10 @@
-# React + Vite
+# Multiwatch
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A basic web app to watch multiple youtube videos/live streams concurrently.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Features include but will not be limited to:
+- Settings (for youtube embed parameters) autoplay, fullscreen, privacy enhanced, related videos panel etc.
+- Export settings and layout as a json file.
+- Import settings and layout from a json file.
+- Customize grid width and height.
+- Reset if you mess up.
