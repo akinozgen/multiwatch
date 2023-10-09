@@ -31,21 +31,28 @@ function YoutubeGrid() {
   );
 
   const setVideo = (index, url) => {
+    let videoId = "";
     // if url has watch
     if (url.includes("watch?v=")) {
-      const videoId = url.match(
+      videoId = url.match(
         /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/
       )?.[1];
+      
+      videoId = videoId.split("&")[0];
     } else if (url.includes("embed")) {
-      const videoId = url.match(
+      videoId = url.match(
         /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:embed\/)?(.+)/
       )?.[1];
+
+      videoId = videoId.split("?")[0];
     } else if (url.includes("youtu.be")) {
-      const videoId = url.match(
+      videoId = url.match(
         /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(.+)/
       )?.[1];
+
+      videoId = videoId.split("?")[0];
     } else {
-      const videoId = url;
+      videoId = url;
     }
 
     const newVideos = [...videos];
