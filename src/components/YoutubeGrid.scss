@@ -38,3 +38,19 @@
   outline: none;
   text-align: center;
 }
+
+.clickable-text {
+  cursor: pointer;
+  font-weight: bold;
+
+  user-select: none;
+}
+
+.hidden-overlay {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.video-item:hover .hidden-overlay {
+  opacity: 1;
+}

@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Col,
+  Collapse,
   Container,
   Form,
   Row,
@@ -37,7 +38,7 @@ function YoutubeGrid() {
       videoId = url.match(
         /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?(.+)/
       )?.[1];
-      
+
       videoId = videoId.split("&")[0];
     } else if (url.includes("embed")) {
       videoId = url.match(
@@ -216,12 +217,14 @@ function YoutubeGrid() {
     );
 
     if (!answer) return;
-      
+
     localStorageHelper.clearState(storageKey);
     localStorageHelper.clearState(settingsKey);
 
     window.location.reload();
   };
+
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <div className="youtube-grid mx-2 my-2">
@@ -231,89 +234,119 @@ function YoutubeGrid() {
         setEmbedSettings={setEmbedSettings}
         embedSettings={embedSettings}
       />
-      <Container fluid className="controls">
+
+      <Container fluid className="controls mx-2">
         <Row>
           <Col>
-            <Container fluid>
-              <Row>
-                <Col>
-                  <Form.Control
-                    type="number"
-                    placeholder="Rows"
-                    value={rows}
-                    onChange={(e) => setRows(e.target.value)}
-                    min={1}
-                    max={10}
-                  />
-                </Col>
-                <Col>
-                  <Form.Control
-                    type="number"
-                    placeholder="Columns"
-                    value={columns}
-                    onChange={(e) => setColumns(e.target.value)}
-                    min={1}
-                    max={10}
-                  />
-                </Col>
-                <Col md={2} sm={2}>
+            <p
+              className="clickable-text"
+              onClick={() => setCollapsed(!collapsed)}
+            >
+              <span>{collapsed ? "🔽 " : "🔼 "}</span>
+              <span>{collapsed ? "Show" : "Hide"} Controls</span>
+            </p>
+          </Col>
+        </Row>
+      </Container>
+
+      <Collapse in={collapsed} className="mx-2">
+        <Container fluid >
+          <Row>
+            <Col md={2} sm={2}>
+              <Form.Group controlId="columnsInput">
+                <Form.Label>
+                  <strong>
+                    Columns <small>(1-10)</small>
+                  </strong>
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Rows"
+                  value={rows}
+                  onChange={(e) => setRows(e.target.value)}
+                  min={1}
+                  max={10}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={2} sm={2}>
+              <Form.Group controlId="rowsInput">
+                <Form.Label>
+                  <strong>
+                    Rows <small>(1-10)</small>
+                  </strong>
+                </Form.Label>
+                <Form.Control
+                  type="number"
+                  placeholder="Columns"
+                  value={columns}
+                  onChange={(e) => setColumns(e.target.value)}
+                  min={1}
+                  max={10}
+                />
+              </Form.Group>
+            </Col>
+            <Col md={2} sm={2}>
+              <Form.Group controlId="actions">
+                <Form.Label>
+                  <strong>Actions</strong>
+                </Form.Label>
+                <div>
                   <ButtonGroup>
                     <Button
                       variant="primary"
                       size="sm"
                       onClick={openSettingsModal}
                     >
-                      Settings
+                      🔧 Settings
                     </Button>
                     <Button
                       variant="success"
                       size="sm"
                       onClick={exportSettings}
                     >
-                      Export
+                      🗃️ Export
                     </Button>
                     <Button
                       variant="warning"
                       size="sm"
                       onClick={importSettings}
                     >
-                      Import
+                      📥 Import
                     </Button>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      onClick={resetSettings}
-                    >
-                      Reset
+                    <Button variant="danger" size="sm" onClick={resetSettings}>
+                      🗑️ Reset
                     </Button>
-                    <input
-                      type="file"
-                      id="fileInput"
-                      accept=".json"
-                      style={{ display: "none" }}
-                      onChange={handleFileInputChange}
-                      ref={(input) => (fileInputRef = input)}
-                    />
                   </ButtonGroup>
-                </Col>
-              </Row>
-            </Container>
-          </Col>
-        </Row>
-      </Container>
-      <Container className="video-grid pt-3" style={videoGridStyle} fluid>
+                </div>
+              </Form.Group>
+            </Col>
+          </Row>
+        </Container>
+      </Collapse>
+      <input
+        type="file"
+        id="fileInput"
+        accept=".json"
+        style={{ display: "none" }}
+        onChange={handleFileInputChange}
+        ref={(input) => (fileInputRef = input)}
+      />
+
+      <Container className="video-grid pt-3 mx-2" style={videoGridStyle} fluid>
         {Array.from({ length: rows * columns }).map((_, index) => (
-          <div key={index} className="video-item">
+          <Col key={index} className="video-item">
             {videos[index] ? (
               <>
-                <Button
+                <span
                   variant="danger"
                   size="sm"
-                  className="delete-button rounded-circle"
+                  href="javascript:void(0)"
+                  className="delete-button clickable-text hidden-overlay"
                   onClick={() => deleteVideo(index)}
                 >
-                  &times;
-                </Button>
+                  ❌
+                </span>
                 <iframe
                   width="100%"
                   height="100%"
@@ -333,7 +366,7 @@ function YoutubeGrid() {
                 />
               </div>
             )}
-          </div>
+          </Col>
         ))}
       </Container>
     </div>
