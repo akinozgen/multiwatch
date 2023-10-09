@@ -242,8 +242,8 @@ function YoutubeGrid() {
               className="clickable-text"
               onClick={() => setCollapsed(!collapsed)}
             >
-              <span>{collapsed ? "🔽 " : "🔼 "}</span>
-              <span>{collapsed ? "Show" : "Hide"} Controls</span>
+              <span>{collapsed ? "🔼 " : "🔽 "}</span>
+              <span>{collapsed ? "Hide" : "Show"} Controls</span>
             </p>
           </Col>
         </Row>
