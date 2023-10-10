@@ -23,6 +23,7 @@ Features include but will not be limited to:
 - Added copy to clipboard functionality for link sharing.
 - Added credits section.
 - Exporting now asks for a filename.
+- Added copy url of an existing video button.
 
 ### TODO
 - [ ] Video queue. Will allow to add videos to a queue and play them one after another for each cell.

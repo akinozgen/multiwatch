@@ -11,10 +11,23 @@
 .delete-button {
   position: absolute;
   top: 8px;
-  right: 8px;
+  left: 8px;
   background-color: transparent;
   border: none;
   color: red;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 2;
+  padding: 4px;
+}
+
+.copy-button {
+  position: absolute;
+  top: 8px;
+  left: 48px;
+  background-color: transparent;
+  border: none;
+  color: white;
   cursor: pointer;
   font-size: 20px;
   z-index: 2;
@@ -49,8 +62,10 @@
 .hidden-overlay {
   opacity: 0;
   transition: opacity 0.5s;
+  background-color: rgba(0, 0, 0, 0.0);
 }
 
 .video-item:hover .hidden-overlay {
   opacity: 1;
+  background-color: rgba(0, 0, 0, 0.75);
 }

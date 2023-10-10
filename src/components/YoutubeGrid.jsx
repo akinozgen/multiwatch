@@ -16,12 +16,18 @@ import CreditsModal from "./CreditsModal";
 function YoutubeGrid() {
   const storageKey = "youtube-grid";
   const settingsKey = "youtube-grid-settings";
-  const initialStateFromURL = new URLSearchParams(window.location.search).get("v");
-  const initialState = initialStateFromURL ? JSON.parse((initialStateFromURL))[storageKey] : localStorageHelper.loadState(storageKey);
+  const initialStateFromURL = new URLSearchParams(window.location.search).get(
+    "v"
+  );
+  const initialState = initialStateFromURL
+    ? JSON.parse(initialStateFromURL)[storageKey]
+    : localStorageHelper.loadState(storageKey);
 
-  const initialSettings = initialStateFromURL ? JSON.parse((initialStateFromURL))[settingsKey] : localStorageHelper.loadState(settingsKey);
+  const initialSettings = initialStateFromURL
+    ? JSON.parse(initialStateFromURL)[settingsKey]
+    : localStorageHelper.loadState(settingsKey);
   let fileInputRef = null;
-  const cheatCode = 'sakinol';
+  const cheatCode = "sakinol";
   const [keySequence, setKeySequence] = useState([]);
 
   const [showSettingsModal, setShowSettingsModal] = useState(false);
@@ -44,22 +50,23 @@ function YoutubeGrid() {
       const newKeySequence = [...keySequence, key];
       setKeySequence(newKeySequence);
 
-      if (newKeySequence.join('').includes(cheatCode)) {
+      if (newKeySequence.join("").includes(cheatCode)) {
         setKeySequence([]);
         // play https://p4rrot.com/clips/9062f370-4576-4475-82aa-9a3c65482ebe.mp4 on full screen and remove video elements
-        const video = document.createElement('video');
-        video.src = 'https://p4rrot.com/clips/9062f370-4576-4475-82aa-9a3c65482ebe.mp4';
+        const video = document.createElement("video");
+        video.src =
+          "https://p4rrot.com/clips/9062f370-4576-4475-82aa-9a3c65482ebe.mp4";
         video.autoplay = true;
         video.loop = false;
         video.controls = false;
-        video.style.position = 'fixed';
+        video.style.position = "fixed";
         video.style.top = 0;
         video.style.left = 0;
-        video.style.width = '100%';
-        video.style.height = '100%';
-        video.style.objectFit = 'contain';
-        
-        video.addEventListener('ended', () => {
+        video.style.width = "100%";
+        video.style.height = "100%";
+        video.style.objectFit = "contain";
+
+        video.addEventListener("ended", () => {
           video.remove();
         });
 
@@ -67,11 +74,11 @@ function YoutubeGrid() {
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    }
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [keySequence]);
 
   const setVideo = (index, url) => {
@@ -120,7 +127,7 @@ function YoutubeGrid() {
       [storageKey]: { rows, columns, videos },
       [settingsKey]: { settings: embedSettings },
     };
-    queryParams.set("v", (JSON.stringify(value)));
+    queryParams.set("v", JSON.stringify(value));
 
     window.history.replaceState(null, null, `?${queryParams.toString()}`);
   };
@@ -170,6 +177,14 @@ function YoutubeGrid() {
     const newVideos = [...videos];
     newVideos[index] = "";
     setVideos(newVideos);
+  };
+
+  const copyUrl = (index) => {
+    const newVideos = [...videos];
+    const videoId = newVideos[index];
+    const url = `https://www.youtube.com/watch?v=${videoId}`;
+    navigator.clipboard.writeText(url);
+    alert("Copied to clipboard!");
   };
 
   const handleTextInputChange = (index, value) => {
@@ -294,7 +309,7 @@ function YoutubeGrid() {
 
     localStorageHelper.clearState(storageKey);
     localStorageHelper.clearState(settingsKey);
-    
+
     // clear v= query param
     window.history.replaceState(null, null, `?`);
     window.location.reload();
@@ -311,7 +326,10 @@ function YoutubeGrid() {
         embedSettings={embedSettings}
       />
 
-      <CreditsModal showCreditsModal={showCreditsModal} closeCreditsModal={closeCreditsModal} />
+      <CreditsModal
+        showCreditsModal={showCreditsModal}
+        closeCreditsModal={closeCreditsModal}
+      />
 
       <Container fluid className="controls mx-2">
         <Row>
@@ -328,7 +346,7 @@ function YoutubeGrid() {
       </Container>
 
       <Collapse in={collapsed} className="mx-2">
-        <Container fluid >
+        <Container fluid>
           <Row>
             <Col md={2} sm={12}>
               <Form.Group controlId="columnsInput">
@@ -371,7 +389,11 @@ function YoutubeGrid() {
                 </Form.Label>
                 <div>
                   <ButtonGroup>
-                    <Button variant="info" size="sm" onClick={copyShareableLink}>
+                    <Button
+                      variant="info"
+                      size="sm"
+                      onClick={copyShareableLink}
+                    >
                       📤 Share
                     </Button>
                     <Button
@@ -398,7 +420,11 @@ function YoutubeGrid() {
                     <Button variant="danger" size="sm" onClick={resetSettings}>
                       🗑️ Reset
                     </Button>
-                    <Button variant="secondary" size="sm" onClick={openCreditsModal}>
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      onClick={openCreditsModal}
+                    >
                       🙏 Credits
                     </Button>
                   </ButtonGroup>
@@ -422,6 +448,15 @@ function YoutubeGrid() {
           <Col key={index} className="video-item">
             {videos[index] ? (
               <>
+                <span
+                  variant="danger"
+                  size="sm"
+                  href="javascript:void(0)"
+                  className="copy-button clickable-text hidden-overlay"
+                  onClick={() => copyUrl(index)}
+                >
+                  📋
+                </span>
                 <span
                   variant="danger"
                   size="sm"
