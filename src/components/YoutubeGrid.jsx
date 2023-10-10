@@ -11,17 +11,21 @@ import {
 } from "react-bootstrap";
 import localStorageHelper from "../actions/localStorage";
 import SettingsModal from "./SettingsModal";
+import CreditsModal from "./CreditsModal";
 
 function YoutubeGrid() {
   const storageKey = "youtube-grid";
   const settingsKey = "youtube-grid-settings";
-  const initialState = localStorageHelper.loadState(storageKey);
-  const initialSettings = localStorageHelper.loadState(settingsKey);
+  const initialStateFromURL = new URLSearchParams(window.location.search).get("v");
+  const initialState = initialStateFromURL ? JSON.parse((initialStateFromURL))[storageKey] : localStorageHelper.loadState(storageKey);
+
+  const initialSettings = initialStateFromURL ? JSON.parse((initialStateFromURL))[settingsKey] : localStorageHelper.loadState(settingsKey);
   let fileInputRef = null;
   const cheatCode = 'sakinol';
   const [keySequence, setKeySequence] = useState([]);
 
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showCreditsModal, setShowCreditsModal] = useState(false);
   const [rows, setRows] = useState(initialState?.rows || 2);
   const [columns, setColumns] = useState(initialState?.columns || 2);
   const [url, setUrl] = useState("");
@@ -70,7 +74,6 @@ function YoutubeGrid() {
     }
   }, [keySequence]);
 
-
   const setVideo = (index, url) => {
     let videoId = "";
     // if url has watch
@@ -107,7 +110,20 @@ function YoutubeGrid() {
       columns,
       videos,
     });
+
+    updateURL();
   }, [videos, rows, columns, textInputs]);
+
+  const updateURL = () => {
+    const queryParams = new URLSearchParams();
+    const value = {
+      [storageKey]: { rows, columns, videos },
+      [settingsKey]: { settings: embedSettings },
+    };
+    queryParams.set("v", (JSON.stringify(value)));
+
+    window.history.replaceState(null, null, `?${queryParams.toString()}`);
+  };
 
   const [embedSettings, setEmbedSettings] = useState(
     initialSettings?.settings || {
@@ -168,6 +184,14 @@ function YoutubeGrid() {
 
   const closeSettingsModal = () => {
     setShowSettingsModal(false);
+  };
+
+  const openCreditsModal = () => {
+    setShowCreditsModal(true);
+  };
+
+  const closeCreditsModal = () => {
+    setShowCreditsModal(false);
   };
 
   const videoGridStyle = {
@@ -251,6 +275,18 @@ function YoutubeGrid() {
     }
   };
 
+  const copyShareableLink = () => {
+    const value = {
+      [storageKey]: { rows, columns, videos },
+      [settingsKey]: { settings: embedSettings },
+    };
+    const queryParams = new URLSearchParams();
+    queryParams.set("v", (JSON.stringify(value)));
+
+    navigator.clipboard.writeText(`${window.location.origin}/?${queryParams.toString()}`);
+    alert("Copied to clipboard!");
+  };
+
   const resetSettings = async () => {
     const answer = window.confirm(
       "Are you sure you want to reset all settings?"
@@ -260,7 +296,9 @@ function YoutubeGrid() {
 
     localStorageHelper.clearState(storageKey);
     localStorageHelper.clearState(settingsKey);
-
+    
+    // clear v= query param
+    window.history.replaceState(null, null, `?`);
     window.location.reload();
   };
 
@@ -274,6 +312,8 @@ function YoutubeGrid() {
         setEmbedSettings={setEmbedSettings}
         embedSettings={embedSettings}
       />
+
+      <CreditsModal showCreditsModal={showCreditsModal} closeCreditsModal={closeCreditsModal} />
 
       <Container fluid className="controls mx-2">
         <Row>
@@ -292,7 +332,7 @@ function YoutubeGrid() {
       <Collapse in={collapsed} className="mx-2">
         <Container fluid >
           <Row>
-            <Col md={2} sm={2}>
+            <Col md={2} sm={12}>
               <Form.Group controlId="columnsInput">
                 <Form.Label>
                   <strong>
@@ -309,7 +349,7 @@ function YoutubeGrid() {
                 />
               </Form.Group>
             </Col>
-            <Col md={2} sm={2}>
+            <Col md={2} sm={12}>
               <Form.Group controlId="rowsInput">
                 <Form.Label>
                   <strong>
@@ -326,19 +366,22 @@ function YoutubeGrid() {
                 />
               </Form.Group>
             </Col>
-            <Col md={2} sm={2}>
+            <Col md={4} sm={12}>
               <Form.Group controlId="actions">
                 <Form.Label>
                   <strong>Actions</strong>
                 </Form.Label>
                 <div>
                   <ButtonGroup>
+                    <Button variant="info" size="sm" onClick={copyShareableLink}>
+                      📤 Share
+                    </Button>
                     <Button
                       variant="primary"
                       size="sm"
                       onClick={openSettingsModal}
                     >
-                      🔧 Settings
+                      ⚙️ Settings
                     </Button>
                     <Button
                       variant="success"
@@ -356,6 +399,9 @@ function YoutubeGrid() {
                     </Button>
                     <Button variant="danger" size="sm" onClick={resetSettings}>
                       🗑️ Reset
+                    </Button>
+                    <Button variant="secondary" size="sm" onClick={openCreditsModal}>
+                      🙏 Credits
                     </Button>
                   </ButtonGroup>
                 </div>
