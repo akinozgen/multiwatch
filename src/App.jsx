@@ -52,7 +52,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
+      {/* <BrowserRouter>
         <Navbar expand="lg">
           <Container fluid className="mx-3">
             <Navbar.Brand href="#home">
@@ -83,7 +83,8 @@ function App() {
           <Route index path="/" element={<YoutubeGrid />} />
           <Route path="/news" element={<NewsGrid />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
+      <YoutubeGrid />
     </>
   );
 }
