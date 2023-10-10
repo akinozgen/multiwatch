@@ -204,6 +204,9 @@ function YoutubeGrid() {
   };
 
   const exportSettings = () => {
+    const filename = prompt("Enter filename", "youtube-grid-settings");
+    if (!filename) return;
+
     const combinedSettings = {
       [storageKey]: {
         rows,
@@ -222,7 +225,7 @@ function YoutubeGrid() {
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "youtube-grid-settings.json";
+    link.download = `${filename}.json`;
     link.click();
 
     URL.revokeObjectURL(url);
