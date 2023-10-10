@@ -276,14 +276,9 @@ function YoutubeGrid() {
   };
 
   const copyShareableLink = () => {
-    const value = {
-      [storageKey]: { rows, columns, videos },
-      [settingsKey]: { settings: embedSettings },
-    };
-    const queryParams = new URLSearchParams();
-    queryParams.set("v", (JSON.stringify(value)));
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl);
 
-    navigator.clipboard.writeText(`${window.location.origin}/?${queryParams.toString()}`);
     alert("Copied to clipboard!");
   };
 
