@@ -27,8 +27,6 @@ function YoutubeGrid() {
     ? JSON.parse(initialStateFromURL)[settingsKey]
     : localStorageHelper.loadState(settingsKey);
   let fileInputRef = null;
-  const cheatCode = "sakinol";
-  const [keySequence, setKeySequence] = useState([]);
 
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [showCreditsModal, setShowCreditsModal] = useState(false);
@@ -42,44 +40,6 @@ function YoutubeGrid() {
   const [videos, setVideos] = useState(
     initialState?.videos || Array.from({ length: rows * columns }, () => "")
   );
-
-  // listen key down and check if it is the cheat code
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      const { key } = e;
-      const newKeySequence = [...keySequence, key];
-      setKeySequence(newKeySequence);
-
-      if (newKeySequence.join("").includes(cheatCode)) {
-        setKeySequence([]);
-        // play https://p4rrot.com/clips/9062f370-4576-4475-82aa-9a3c65482ebe.mp4 on full screen and remove video elements
-        const video = document.createElement("video");
-        video.src =
-          "https://p4rrot.com/clips/9062f370-4576-4475-82aa-9a3c65482ebe.mp4";
-        video.autoplay = true;
-        video.loop = false;
-        video.controls = false;
-        video.style.position = "fixed";
-        video.style.top = 0;
-        video.style.left = 0;
-        video.style.width = "100%";
-        video.style.height = "100%";
-        video.style.objectFit = "contain";
-
-        video.addEventListener("ended", () => {
-          video.remove();
-        });
-
-        document.body.appendChild(video);
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [keySequence]);
 
   const setVideo = (index, url) => {
     let videoId = "";

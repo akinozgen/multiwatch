@@ -25,6 +25,10 @@ Features include but will not be limited to:
 - Exporting now asks for a filename.
 - Added copy url of an existing video button.
 
+#### 11.10.2023
+- Added 'News' section.
+- Users now can add news articles to the news section.
+
 ### TODO
 - [ ] Video queue. Will allow to add videos to a queue and play them one after another for each cell.
 - [ ] A search bar to search for videos directly from youtube and add them to the grid.

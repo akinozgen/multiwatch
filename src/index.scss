@@ -1,7 +1,9 @@
 @import '~bootstrap/scss/bootstrap';
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -13,10 +15,15 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  --bs-body-font-family: 'Poppins', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 // rounded bootstrap button
 .rounded-circle {
   border-radius: 50%;
   line-height: 1.2;
+}
+
+.d-inline-block {
+  display: inline-block !important;
 }
