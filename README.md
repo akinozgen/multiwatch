@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ad68d3a3-b997-492f-87fc-ed5b5f649d61/deploy-status)](https://app.netlify.com/sites/multiwatchao/deploys)
+
 # Multiwatch
 
 A basic web app to watch multiple youtube videos/live streams concurrently.

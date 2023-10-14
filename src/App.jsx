@@ -3,7 +3,7 @@ import "./App.css";
 import YoutubeGrid from "~/pages/YoutubeGrid";
 import Bookmarks from "~/pages/Bookmarks";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 import CreditsModal from "~/components/CreditsModal";
 
 import favicon from "../favicon.png";
@@ -107,7 +107,20 @@ function App() {
   return (
     <>
       {domain.includes("github") ? (
-        <YoutubeGrid />
+        <Container fluid>
+          <Row className="mx-3 mt-4">
+            <Col>
+              <p>
+              ✨ Try new website: <a href="https://multiwatchao.netlify.app/" target="_blank" rel="noreferrer">Multiwatch on Netlify</a>
+              </p>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+            <YoutubeGrid />
+            </Col>
+          </Row>
+        </Container>
       ) : (
         RouterPage
       )}
