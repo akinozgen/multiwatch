@@ -9,7 +9,8 @@ export default defineConfig({
   // config of react-bootstrap
   resolve: {
     alias: {
-      '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap')
+      '~': path.resolve(__dirname, 'src'),
+      '~bootstrap': path.resolve(__dirname, 'node_modules/bootstrap'),
     }
   }
 })

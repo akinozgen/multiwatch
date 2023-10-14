@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
-import "./YoutubeGrid.scss";
+import "./index.scss";
 import {
   Button,
   ButtonGroup,
@@ -9,9 +10,9 @@ import {
   Form,
   Row,
 } from "react-bootstrap";
-import localStorageHelper from "../actions/localStorage";
-import SettingsModal from "./SettingsModal";
-import CreditsModal from "./CreditsModal";
+import localStorageHelper from "~/actions/localStorage";
+import SettingsModal from "~/components/SettingsModal";
+import CreditsModal from "~/components/CreditsModal";
 
 function YoutubeGrid() {
   const storageKey = "youtube-grid";

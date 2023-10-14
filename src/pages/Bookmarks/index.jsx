@@ -9,8 +9,8 @@ import {
   InputGroup,
   Row,
 } from "react-bootstrap";
-import "./NewsGrid.scss";
-import localStorageHelper from "../actions/localStorage";
+import "./index.scss";
+import localStorageHelper from "~/actions/localStorage";
 import axios from "axios";
 
 

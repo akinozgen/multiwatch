@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import YoutubeGrid from "./components/YoutubeGrid";
-import NewsGrid from "./components/NewsGrid";
+import YoutubeGrid from "~/pages/YoutubeGrid";
+import Bookmarks from "~/pages/Bookmarks";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import { Container, Nav, Navbar, Row } from "react-bootstrap";
 
@@ -50,41 +50,50 @@ function App() {
     };
   }, [keySequence]);
 
+  const domain = window.location.hostname;
+
+  const RouterPage = (
+    <BrowserRouter>
+      <Navbar expand="lg">
+        <Container fluid className="mx-3">
+          <Navbar.Brand href="#home">
+            <img
+              src={favicon}
+              alt="Multiwatch"
+              width="20"
+              height="20"
+              className="d-inline-block align-top mt-2 mr-2"
+            />
+            <div className="d-inline-block ml-2">Multiwatch</div>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="mr-auto">
+              <Nav.Link>
+                <Link to="/">YouTube</Link>
+              </Nav.Link>
+              <Nav.Link>
+                <Link to="/bookmarks">Bookmarks</Link>
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      <Routes>
+        <Route index path="/" element={<YoutubeGrid />} />
+        <Route path="/news" element={<Bookmarks />} />
+      </Routes>
+    </BrowserRouter>
+  );
+
   return (
     <>
-      {/* <BrowserRouter>
-        <Navbar expand="lg">
-          <Container fluid className="mx-3">
-            <Navbar.Brand href="#home">
-              <img
-                src={favicon}
-                alt="Multiwatch"
-                width="20"
-                height="20"
-                className="d-inline-block align-top mt-2 mr-2"
-              />
-              <div className="d-inline-block ml-2">Multiwatch</div>
-            </Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="mr-auto">
-                <Nav.Link>
-                  <Link to="/">YouTube</Link>
-                </Nav.Link>
-                <Nav.Link>
-                  <Link to="/news">News</Link>
-                </Nav.Link>
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-
-        <Routes>
-          <Route index path="/" element={<YoutubeGrid />} />
-          <Route path="/news" element={<NewsGrid />} />
-        </Routes>
-      </BrowserRouter> */}
-      <YoutubeGrid />
+      {domain.includes("github") ? (
+        <YoutubeGrid />
+      ) : (
+        RouterPage
+      )}
     </>
   );
 }
