@@ -12,7 +12,6 @@ import {
 } from "react-bootstrap";
 import localStorageHelper from "~/actions/localStorage";
 import SettingsModal from "~/components/SettingsModal";
-import CreditsModal from "~/components/CreditsModal";
 
 function YoutubeGrid() {
   const storageKey = "youtube-grid";
@@ -30,7 +29,6 @@ function YoutubeGrid() {
   let fileInputRef = null;
 
   const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [showCreditsModal, setShowCreditsModal] = useState(false);
   const [rows, setRows] = useState(initialState?.rows || 2);
   const [columns, setColumns] = useState(initialState?.columns || 2);
   const [url, setUrl] = useState("");
@@ -162,14 +160,6 @@ function YoutubeGrid() {
     setShowSettingsModal(false);
   };
 
-  const openCreditsModal = () => {
-    setShowCreditsModal(true);
-  };
-
-  const closeCreditsModal = () => {
-    setShowCreditsModal(false);
-  };
-
   const videoGridStyle = {
     display: "grid",
     gridTemplateColumns: `repeat(${columns}, 1fr)`,
@@ -287,11 +277,6 @@ function YoutubeGrid() {
         embedSettings={embedSettings}
       />
 
-      <CreditsModal
-        showCreditsModal={showCreditsModal}
-        closeCreditsModal={closeCreditsModal}
-      />
-
       <Container fluid className="controls mx-2">
         <Row>
           <Col>
@@ -380,13 +365,6 @@ function YoutubeGrid() {
                     </Button>
                     <Button variant="danger" size="sm" onClick={resetSettings}>
                       🗑️ Reset
-                    </Button>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={openCreditsModal}
-                    >
-                      🙏 Credits
                     </Button>
                   </ButtonGroup>
                 </div>

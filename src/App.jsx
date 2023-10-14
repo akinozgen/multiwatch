@@ -3,14 +3,23 @@ import "./App.css";
 import YoutubeGrid from "~/pages/YoutubeGrid";
 import Bookmarks from "~/pages/Bookmarks";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { Container, Nav, Navbar, Row } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import CreditsModal from "~/components/CreditsModal";
 
 import favicon from "../favicon.png";
 
 function App() {
-  const [count, setCount] = useState(0);
   const cheatCode = "sakinol";
   const [keySequence, setKeySequence] = useState([]);
+  const [showCreditsModal, setShowCreditsModal] = useState(false);
+
+  const openCreditsModal = () => {
+    setShowCreditsModal(true);
+  };
+
+  const closeCreditsModal = () => {
+    setShowCreditsModal(false);
+  };
 
   // listen key down and check if it is the cheat code
   useEffect(() => {
@@ -21,7 +30,6 @@ function App() {
 
       if (newKeySequence.join("").includes(cheatCode)) {
         setKeySequence([]);
-        // play https://p4rrot.com/clips/9062f370-4576-4475-82aa-9a3c65482ebe.mp4 on full screen and remove video elements
         const video = document.createElement("video");
         video.src =
           "https://p4rrot.com/clips/9062f370-4576-4475-82aa-9a3c65482ebe.mp4";
@@ -75,6 +83,9 @@ function App() {
               <Nav.Link>
                 <Link to="/bookmarks">Bookmarks</Link>
               </Nav.Link>
+              <Nav.Link>
+                <a href="javascript:void(0)" onClick={openCreditsModal}>Credits</a>
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
@@ -82,8 +93,14 @@ function App() {
 
       <Routes>
         <Route index path="/" element={<YoutubeGrid />} />
-        <Route path="/news" element={<Bookmarks />} />
+        <Route path="/bookmarks" element={<Bookmarks />} />
       </Routes>
+      
+      <CreditsModal
+        showCreditsModal={showCreditsModal}
+        closeCreditsModal={closeCreditsModal}
+      />
+
     </BrowserRouter>
   );
 
