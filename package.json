@@ -6,7 +6,7 @@
   "homepage": "https://akinozgen.github.io/multiwatch",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && cp ./_redirects ./dist/_redirects",
+    "build": "vite build && cp ./_redirects ./dist/_redirects && ls -la ./dist",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "predeploy": "npm run build",
