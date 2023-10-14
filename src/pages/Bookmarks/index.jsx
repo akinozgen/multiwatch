@@ -12,11 +12,12 @@ import {
 import "./index.scss";
 import localStorageHelper from "~/actions/localStorage";
 import axios from "axios";
-
+import BookmarkUrl from "./BookmarkUrl";
 
 function NewsGrid() {
   /**
    * newsItemObject: {
+   *   type: 'url|directory',
    *   url: string,
    *   title: string,
    *   favicon: string,
@@ -30,7 +31,7 @@ function NewsGrid() {
 
   const resolveTitle = async (url) => {
     try {
-      const endpoint = 'https://title-fetch-8c2f1e444cb3.herokuapp.com/?url=';
+      const endpoint = "https://title-fetch-8c2f1e444cb3.herokuapp.com/?url=";
       const response = await axios.get(endpoint + url);
       const title = response.data;
       // convert &amp; to &, etc.
@@ -52,6 +53,7 @@ function NewsGrid() {
 
   const addNewURL = async () => {
     const newsItemObject = {
+      type: "url",
       url: newURL,
       title: null,
       favicon: null,
@@ -69,6 +71,45 @@ function NewsGrid() {
     const newNewsLinks = [...newsLinks];
     newNewsLinks.splice(index, 1);
     setNewsLinks(newNewsLinks);
+  };
+
+  const exportSettings = () => {
+    const filename = prompt("Enter filename", "bookmarks");
+    if (!filename) return;
+
+    const combinedSettings = {
+      [newsKey]: {
+        newsLinks
+      },
+    };
+
+    const blob = new Blob([JSON.stringify(combinedSettings)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${filename}.json`;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  };
+
+  const importSettings = () => {
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = ".json";
+    fileInput.click();
+
+    fileInput.onchange = async (event) => {
+      const file = event.target.files[0];
+      const text = await file.text();
+      const combinedSettings = JSON.parse(text);
+
+      const newsLinks = combinedSettings[newsKey].newsLinks;
+      setNewsLinks(newsLinks);
+    };
   };
 
   useEffect(() => {
@@ -104,9 +145,9 @@ function NewsGrid() {
             <Card className="mx-2 mb-4">
               <Card.Body>
                 <div>
-                <Form.Label>
-                  <strong>Actions</strong>
-                </Form.Label>
+                  <Form.Label>
+                    <strong>Actions</strong>
+                  </Form.Label>
                 </div>
                 <ButtonGroup>
                   <Button
@@ -116,6 +157,12 @@ function NewsGrid() {
                   >
                     🗑️ Clear All
                   </Button>
+                  <Button variant="success" size="sm" onClick={exportSettings}>
+                    🗃️ Export
+                  </Button>
+                  <Button variant="warning" size="sm" onClick={importSettings}>
+                    📥 Import
+                  </Button>
                 </ButtonGroup>
               </Card.Body>
             </Card>
@@ -124,51 +171,18 @@ function NewsGrid() {
       </Container>
 
       <Container fluid className="mb-4">
-        {newsLinks.map((link, index) => (
-          <Row className="mb-2" key={index}>
-            <Col>
-              <Card
-                className="mx-2 clickable-card"
-                onClick={() => window.open(link.url, "_blank")}
-              >
-                <Card.Body>
-                  <Row className="d-flex align-items-center">
-                    <Col className="flex-grow-0">
-                      <div className="mr-2">
-                        <img
-                          src={link.favicon}
-                          alt="favicon"
-                          width={20}
-                          height={20}
-                        />
-                      </div>
-                    </Col>
-                    <Col
-                      className="flex-grow-0"
-                      style={{ minWidth: "fit-content" }}
-                    >
-                      <div className="d-inline-block">{link.title}</div>
-                    </Col>
-                    <Col className="flex-grow-1">
-                      <div className="d-inline-block text-muted">
-                        {link.url}
-                      </div>
-                    </Col>
-                    <Col className="flex-grow-0">
-                      <Button
-                        variant="default"
-                        onClick={(event) => removeLink(index, event)}
-                        className="float-end"
-                      >
-                        ❌
-                      </Button>
-                    </Col>
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        ))}
+        {newsLinks.map((link, index) =>
+          link.type === "url" ? (
+            <BookmarkUrl
+              key={index}
+              index={index}
+              link={link}
+              onClick={(event) => removeLink(index, event)}
+            />
+          ) : (
+            <>test</>
+          )
+        )}
       </Container>
     </>
   );
