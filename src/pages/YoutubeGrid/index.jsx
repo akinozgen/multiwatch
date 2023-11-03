@@ -117,6 +117,10 @@ function YoutubeGrid() {
         name: "Privacy Enhanced Mode",
         value: 1,
       },
+      "click-to-fullscreen": {
+        name: "Allow Click to Fullscreen",
+        value: 1,
+      },
     }
   );
 
@@ -136,6 +140,26 @@ function YoutubeGrid() {
     const newVideos = [...videos];
     newVideos[index] = "";
     setVideos(newVideos);
+
+    const iframes = document.querySelectorAll(".iframe-container");
+    iframes.forEach((iframe) => {
+      iframe.classList.remove("fullscreen");
+    });
+  };
+
+  const fullscreenVideo = (index) => {
+    const iframes = document.querySelectorAll(".iframe-container");
+    iframes.forEach((iframe) => {
+      if (iframe.classList.contains(`iframe-${index}`)) return;
+      iframe.classList.remove("fullscreen");
+    });
+
+    const iframe = document.querySelector(`.iframe-${index}`);
+    if (iframe.classList.contains("fullscreen")) {
+      iframe.classList.remove("fullscreen");
+    } else {
+      iframe.classList.add("fullscreen");
+    }
   };
 
   const copyUrl = (index) => {
@@ -384,7 +408,10 @@ function YoutubeGrid() {
 
       <Container className="video-grid pt-3 mx-2" style={videoGridStyle} fluid>
         {Array.from({ length: rows * columns }).map((_, index) => (
-          <Col key={index} className="video-item">
+          <Col
+            key={index}
+            className={`iframe-${index} iframe-container video-item`}
+          >
             {videos[index] ? (
               <>
                 <span
@@ -404,6 +431,15 @@ function YoutubeGrid() {
                   onClick={() => deleteVideo(index)}
                 >
                   ❌
+                </span>
+                <span
+                  variant="danger"
+                  size="sm"
+                  href="javascript:void(0)"
+                  className="fullscreen-button clickable-text hidden-overlay"
+                  onClick={() => fullscreenVideo(index)}
+                >
+                  📺
                 </span>
                 <iframe
                   width="100%"
