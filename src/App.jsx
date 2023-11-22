@@ -95,7 +95,6 @@ function App() {
       <Routes>
         <Route index path="/" element={<YoutubeGrid />} />
         <Route path="/bookmarks" element={<Bookmarks />} />
-        // 404 Route
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       
