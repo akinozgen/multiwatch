@@ -7,6 +7,7 @@ import { Col, Container, Nav, Navbar, Row } from "react-bootstrap";
 import CreditsModal from "~/components/CreditsModal";
 
 import favicon from "../favicon.png";
+import NotFoundPage from "~/pages/404";
 
 function App() {
   const cheatCode = "sakinol";
@@ -94,6 +95,8 @@ function App() {
       <Routes>
         <Route index path="/" element={<YoutubeGrid />} />
         <Route path="/bookmarks" element={<Bookmarks />} />
+        // 404 Route
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       
       <CreditsModal
